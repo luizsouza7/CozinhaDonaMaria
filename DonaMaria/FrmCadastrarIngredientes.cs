@@ -16,5 +16,10 @@ namespace DonaMaria
         {
             InitializeComponent();
         }
+
+        private void FrmCadastrarIngredientes_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
