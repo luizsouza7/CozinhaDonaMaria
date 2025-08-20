@@ -21,5 +21,10 @@ namespace DonaMaria
         {
 
         }
+
+        private void FrmCadastrarReceita_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
