@@ -52,7 +52,7 @@ namespace DonaMaria
             label1.AutoSize = true;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(95, 15);
+            label1.Size = new Size(97, 15);
             label1.TabIndex = 0;
             label1.Text = "Nome da Receita";
             // 
@@ -67,7 +67,7 @@ namespace DonaMaria
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(400, 9);
+            label2.Location = new Point(531, 9);
             label2.Name = "label2";
             label2.Size = new Size(93, 15);
             label2.TabIndex = 2;
@@ -75,7 +75,7 @@ namespace DonaMaria
             // 
             // txtTipo
             // 
-            txtTipo.Location = new Point(400, 27);
+            txtTipo.Location = new Point(531, 27);
             txtTipo.Name = "txtTipo";
             txtTipo.ReadOnly = true;
             txtTipo.Size = new Size(388, 23);
@@ -110,22 +110,22 @@ namespace DonaMaria
             // 
             colQtd.HeaderText = "Quantidade";
             colQtd.Name = "colQtd";
-            colQtd.Width = 175;
             colQtd.ReadOnly = true;
+            colQtd.Width = 175;
             // 
             // colObs
             // 
             colObs.HeaderText = "Observação";
             colObs.Name = "colObs";
-            colObs.Width = 275;
             colObs.ReadOnly = true;
+            colObs.Width = 275;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Location = new Point(12, 214);
             label4.Name = "label4";
-            label4.Size = new Size(94, 15);
+            label4.Size = new Size(99, 15);
             label4.TabIndex = 6;
             label4.Text = "Modo de Preparo";
             // 
@@ -144,7 +144,7 @@ namespace DonaMaria
             label5.AutoSize = true;
             label5.Location = new Point(400, 214);
             label5.Name = "label5";
-            label5.Size = new Size(57, 15);
+            label5.Size = new Size(58, 15);
             label5.TabIndex = 8;
             label5.Text = "Utensílios";
             // 
@@ -163,7 +163,7 @@ namespace DonaMaria
             label6.AutoSize = true;
             label6.Location = new Point(12, 335);
             label6.Name = "label6";
-            label6.Size = new Size(85, 15);
+            label6.Size = new Size(74, 15);
             label6.TabIndex = 10;
             label6.Text = "Observações";
             // 
@@ -174,14 +174,14 @@ namespace DonaMaria
             txtObservacoes.Name = "txtObservacoes";
             txtObservacoes.ReadOnly = true;
             txtObservacoes.ScrollBars = ScrollBars.Vertical;
-            txtObservacoes.Size = new Size(776, 60);
+            txtObservacoes.Size = new Size(776, 85);
             txtObservacoes.TabIndex = 11;
             // 
             // btnGerar
             // 
-            btnGerar.Location = new Point(713, 419);
+            btnGerar.Location = new Point(825, 373);
             btnGerar.Name = "btnGerar";
-            btnGerar.Size = new Size(75, 23);
+            btnGerar.Size = new Size(94, 55);
             btnGerar.TabIndex = 12;
             btnGerar.Text = "Gerar outra";
             btnGerar.UseVisualStyleBackColor = true;
@@ -190,7 +190,7 @@ namespace DonaMaria
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(931, 450);
             Controls.Add(btnGerar);
             Controls.Add(txtObservacoes);
             Controls.Add(label6);

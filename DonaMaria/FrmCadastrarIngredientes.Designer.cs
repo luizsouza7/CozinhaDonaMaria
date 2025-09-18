@@ -46,7 +46,7 @@
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(11, 231);
+            btnSalvar.Location = new Point(10, 243);
             btnSalvar.Name = "btnSalvar";
             btnSalvar.Size = new Size(76, 28);
             btnSalvar.TabIndex = 15;
@@ -91,7 +91,7 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(11, 75);
+            textBox3.Location = new Point(10, 87);
             textBox3.Multiline = true;
             textBox3.Name = "textBox3";
             textBox3.ScrollBars = ScrollBars.Vertical;
@@ -115,7 +115,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(11, 57);
+            label3.Location = new Point(10, 69);
             label3.Name = "label3";
             label3.Size = new Size(58, 15);
             label3.TabIndex = 10;
@@ -141,10 +141,10 @@
             // 
             // FrmCadastrarIngredientes
             // 
+            AcceptButton = btnSalvar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            StartPosition = FormStartPosition.CenterParent;
+            ClientSize = new Size(932, 450);
             Controls.Add(btnSalvar);
             Controls.Add(dataGridView1);
             Controls.Add(textBox3);
@@ -154,8 +154,8 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "FrmCadastrarIngredientes";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Cadastrar Ingredientes";
-            AcceptButton = btnSalvar;
             Load += FrmCadastrarIngredientes_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);

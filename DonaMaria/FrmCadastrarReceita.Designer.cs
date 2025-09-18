@@ -65,9 +65,9 @@
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(102, 27);
+            textBox2.Location = new Point(262, 27);
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(681, 23);
+            textBox2.Size = new Size(387, 23);
             textBox2.TabIndex = 20;
             // 
             // textBox1
@@ -80,7 +80,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(102, 9);
+            label2.Location = new Point(262, 9);
             label2.Name = "label2";
             label2.Size = new Size(97, 15);
             label2.TabIndex = 17;
@@ -98,7 +98,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 60);
+            label3.Location = new Point(739, 27);
             label3.Name = "label3";
             label3.Size = new Size(93, 15);
             label3.TabIndex = 24;
@@ -107,7 +107,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 90);
+            label4.Location = new Point(12, 62);
             label4.Name = "label4";
             label4.Size = new Size(72, 15);
             label4.TabIndex = 25;
@@ -117,9 +117,9 @@
             // 
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3 });
-            dataGridView2.Location = new Point(12, 108);
+            dataGridView2.Location = new Point(12, 80);
             dataGridView2.Name = "dataGridView2";
-            dataGridView2.Size = new Size(596, 57);
+            dataGridView2.Size = new Size(596, 95);
             dataGridView2.TabIndex = 26;
             // 
             // dataGridViewTextBoxColumn1
@@ -141,7 +141,7 @@
             // 
             // btnAdicionarIngredientes
             // 
-            btnAdicionarIngredientes.Location = new Point(624, 108);
+            btnAdicionarIngredientes.Location = new Point(653, 106);
             btnAdicionarIngredientes.Name = "btnAdicionarIngredientes";
             btnAdicionarIngredientes.Size = new Size(99, 46);
             btnAdicionarIngredientes.TabIndex = 27;
@@ -159,9 +159,9 @@
             // 
             // comboBox1
             // 
-            comboBox1.FormattingEnabled = true;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.Location = new Point(111, 57);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(838, 24);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(88, 23);
             comboBox1.TabIndex = 29;
@@ -222,11 +222,10 @@
             // 
             numericUpDown3.Location = new Point(67, 344);
             numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown3.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new Size(70, 23);
             numericUpDown3.TabIndex = 36;
+            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // dataGridView1
             // 
@@ -234,7 +233,7 @@
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Código, Nome, Cozinha, Tempo, Porções });
             dataGridView1.Location = new Point(-2, 385);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(805, 67);
+            dataGridView1.Size = new Size(938, 67);
             dataGridView1.TabIndex = 37;
             // 
             // Código
@@ -285,10 +284,10 @@
             // 
             // FrmCadastrarReceita
             // 
+            AcceptButton = btnSalvar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            StartPosition = FormStartPosition.CenterParent;
+            ClientSize = new Size(938, 450);
             Controls.Add(btnAlterar);
             Controls.Add(btnSalvar);
             Controls.Add(dataGridView1);
@@ -310,8 +309,8 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "FrmCadastrarReceita";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Cadastrar Receitas";
-            AcceptButton = btnSalvar;
             Load += FrmCadastrarReceita_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();

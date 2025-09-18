@@ -27,5 +27,10 @@ namespace DonaMaria
                 dataGridView1.Rows.Add(item.ingrediente, item.quantidade, item.observacao);
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
