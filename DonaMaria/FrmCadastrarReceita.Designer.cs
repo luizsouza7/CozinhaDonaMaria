@@ -160,6 +160,7 @@
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Location = new Point(111, 57);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(88, 23);
@@ -204,6 +205,7 @@
             // numericUpDown1
             // 
             numericUpDown1.Location = new Point(122, 305);
+            numericUpDown1.Maximum = new decimal(new int[] { 23, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(70, 23);
             numericUpDown1.TabIndex = 34;
@@ -211,6 +213,7 @@
             // numericUpDown2
             // 
             numericUpDown2.Location = new Point(287, 305);
+            numericUpDown2.Maximum = new decimal(new int[] { 59, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new Size(70, 23);
             numericUpDown2.TabIndex = 35;
@@ -218,6 +221,9 @@
             // numericUpDown3
             // 
             numericUpDown3.Location = new Point(67, 344);
+            numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown3.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new Size(70, 23);
             numericUpDown3.TabIndex = 36;
@@ -282,6 +288,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            StartPosition = FormStartPosition.CenterParent;
             Controls.Add(btnAlterar);
             Controls.Add(btnSalvar);
             Controls.Add(dataGridView1);
@@ -304,6 +311,7 @@
             Controls.Add(label1);
             Name = "FrmCadastrarReceita";
             Text = "Cadastrar Receitas";
+            AcceptButton = btnSalvar;
             Load += FrmCadastrarReceita_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();

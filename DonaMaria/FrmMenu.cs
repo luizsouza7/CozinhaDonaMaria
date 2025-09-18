@@ -41,6 +41,19 @@ namespace DonaMaria
 				form.ShowDialog(this);
 			}
 		}
+
+		private void menuItemSugestao_Click(object sender, EventArgs e)
+		{
+			using (var form = new FrmSugestaoReceita())
+			{
+				form.ShowDialog(this);
+			}
+		}
+
+		private void menuItemSair_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
 	}
 }
 

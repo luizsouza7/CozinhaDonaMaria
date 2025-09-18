@@ -101,12 +101,14 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            StartPosition = FormStartPosition.CenterParent;
             Controls.Add(dataGridView1);
             Controls.Add(btnLocalizar);
             Controls.Add(textBox1);
             Controls.Add(label1);
             Name = "FrmConsultaReceita";
-            Text = "FrmConsultaReceita";
+            Text = "Consultar Receitas";
+            AcceptButton = btnLocalizar;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

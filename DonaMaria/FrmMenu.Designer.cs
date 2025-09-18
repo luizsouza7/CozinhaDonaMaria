@@ -28,12 +28,85 @@ namespace DonaMaria
 		/// </summary>
 		private void InitializeComponent()
 		{
+			menuStrip1 = new MenuStrip();
+			menuItemMenu = new ToolStripMenuItem();
+			menuItemTipos = new ToolStripMenuItem();
+			menuItemIngredientes = new ToolStripMenuItem();
+			menuItemReceitas = new ToolStripMenuItem();
+			menuItemConsultar = new ToolStripMenuItem();
+			toolStripMenuItemSeparator = new ToolStripSeparator();
+			menuItemSair = new ToolStripMenuItem();
 			btnTiposCozinha = new Button();
 			btnIngredientes = new Button();
 			btnReceitas = new Button();
 			btnConsultar = new Button();
 			label1 = new Label();
 			SuspendLayout();
+			// 
+			// menuStrip1
+			// 
+			menuStrip1.Items.AddRange(new ToolStripItem[] { menuItemMenu });
+			menuStrip1.Location = new Point(0, 0);
+			menuStrip1.Name = "menuStrip1";
+			menuStrip1.Size = new Size(800, 24);
+			menuStrip1.TabIndex = 5;
+			menuStrip1.Text = "menuStrip1";
+			// 
+			// menuItemMenu
+			// 
+			menuItemMenu.DropDownItems.AddRange(new ToolStripItem[] { menuItemTipos, menuItemIngredientes, menuItemReceitas, menuItemConsultar, toolStripMenuItemSeparator, menuItemSair });
+			menuItemMenu.Name = "menuItemMenu";
+			menuItemMenu.Size = new Size(50, 20);
+			menuItemMenu.Text = "Menu";
+			// 
+			// menuItemTipos
+			// 
+			menuItemTipos.Name = "menuItemTipos";
+			menuItemTipos.Size = new Size(181, 22);
+			menuItemTipos.Text = "Tipos de Cozinha";
+			menuItemTipos.Click += btnTiposCozinha_Click;
+			// 
+			// menuItemIngredientes
+			// 
+			menuItemIngredientes.Name = "menuItemIngredientes";
+			menuItemIngredientes.Size = new Size(181, 22);
+			menuItemIngredientes.Text = "Ingredientes";
+			menuItemIngredientes.Click += btnIngredientes_Click;
+			// 
+			// menuItemReceitas
+			// 
+			menuItemReceitas.Name = "menuItemReceitas";
+			menuItemReceitas.Size = new Size(181, 22);
+			menuItemReceitas.Text = "Receitas";
+			menuItemReceitas.Click += btnReceitas_Click;
+			// 
+			// menuItemConsultar
+			// 
+			menuItemConsultar.Name = "menuItemConsultar";
+			menuItemConsultar.Size = new Size(181, 22);
+			menuItemConsultar.Text = "Consultar Receitas";
+			menuItemConsultar.Click += btnConsultar_Click;
+			// 
+			// menuItemSugestao
+			// 
+			menuItemSugestao = new ToolStripMenuItem();
+			menuItemMenu.DropDownItems.Insert(4, menuItemSugestao);
+			menuItemSugestao.Name = "menuItemSugestao";
+			menuItemSugestao.Size = new Size(181, 22);
+			menuItemSugestao.Text = "Sugestão de Receita";
+			menuItemSugestao.Click += menuItemSugestao_Click;
+			// 
+			// toolStripMenuItemSeparator
+			// 
+			toolStripMenuItemSeparator.Name = "toolStripMenuItemSeparator";
+			toolStripMenuItemSeparator.Size = new Size(178, 6);
+			// 
+			// menuItemSair
+			// 
+			menuItemSair.Name = "menuItemSair";
+			menuItemSair.Size = new Size(181, 22);
+			menuItemSair.Text = "Sair";
+			menuItemSair.Click += menuItemSair_Click;
 			// 
 			// btnTiposCozinha
 			// 
@@ -90,11 +163,14 @@ namespace DonaMaria
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 150);
+			StartPosition = FormStartPosition.CenterScreen;
+			Controls.Add(menuStrip1);
 			Controls.Add(label1);
 			Controls.Add(btnConsultar);
 			Controls.Add(btnReceitas);
 			Controls.Add(btnIngredientes);
 			Controls.Add(btnTiposCozinha);
+			MainMenuStrip = menuStrip1;
 			Name = "FrmMenu";
 			Text = "Menu";
 			ResumeLayout(false);
@@ -103,6 +179,15 @@ namespace DonaMaria
 
 		#endregion
 
+		private MenuStrip menuStrip1;
+		private ToolStripMenuItem menuItemMenu;
+		private ToolStripMenuItem menuItemTipos;
+		private ToolStripMenuItem menuItemIngredientes;
+		private ToolStripMenuItem menuItemReceitas;
+		private ToolStripMenuItem menuItemConsultar;
+		private ToolStripMenuItem menuItemSugestao;
+		private ToolStripSeparator toolStripMenuItemSeparator;
+		private ToolStripMenuItem menuItemSair;
 		private Button btnTiposCozinha;
 		private Button btnIngredientes;
 		private Button btnReceitas;

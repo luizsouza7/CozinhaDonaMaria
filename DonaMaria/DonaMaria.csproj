@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>DonaMaria</AssemblyName>
+    <RootNamespace>DonaMaria</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

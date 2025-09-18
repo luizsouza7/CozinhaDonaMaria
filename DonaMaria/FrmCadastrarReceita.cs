@@ -91,6 +91,21 @@ namespace DonaMaria
                 rowToUpdate.Cells["Porções"].Value = porcoes;
             }
 
+            // Persistência em memória
+            var receita = new Recipe
+            {
+                Codigo = codigo ?? string.Empty,
+                Nome = nome ?? string.Empty,
+                TipoCozinha = tipo,
+                TempoPreparoMinutos = tempoTotal,
+                Porcoes = porcoes,
+                ModoPreparo = textBox3.Text?.Trim() ?? string.Empty,
+                Observacoes = null,
+                Utensilios = null,
+                Ingredientes = ColetarIngredientes()
+            };
+            RecipeRepository.AddOrUpdate(receita);
+
             // Limpa campos básicos (mantém ingredientes preenchidos)
             textBox1.Clear();
             textBox2.Clear();
@@ -125,6 +140,29 @@ namespace DonaMaria
                 }
             }
             numericUpDown3.Value = Convert.ToDecimal(row.Cells["Porções"].Value ?? 0);
+        }
+
+        private List<IngredientItem> ColetarIngredientes()
+        {
+            var lista = new List<IngredientItem>();
+            foreach (DataGridViewRow row in dataGridView2.Rows)
+            {
+                if (row.IsNewRow) continue;
+                var nome = Convert.ToString(row.Cells[0].Value)?.Trim() ?? string.Empty; // Ingrediente
+                var qtd = Convert.ToString(row.Cells[1].Value)?.Trim() ?? string.Empty;  // Quantidade
+                var obs = Convert.ToString(row.Cells[2].Value)?.Trim() ?? string.Empty;  // Unidade/Observação
+                if (string.IsNullOrWhiteSpace(nome) && string.IsNullOrWhiteSpace(qtd) && string.IsNullOrWhiteSpace(obs))
+                {
+                    continue;
+                }
+                lista.Add(new IngredientItem
+                {
+                    Nome = nome,
+                    Quantidade = qtd,
+                    Observacao = obs
+                });
+            }
+            return lista;
         }
     }
 }

@@ -144,6 +144,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            StartPosition = FormStartPosition.CenterParent;
             Controls.Add(btnSalvar);
             Controls.Add(dataGridView1);
             Controls.Add(textBox3);
@@ -154,6 +155,7 @@
             Controls.Add(label1);
             Name = "FrmCadastrarIngredientes";
             Text = "Cadastrar Ingredientes";
+            AcceptButton = btnSalvar;
             Load += FrmCadastrarIngredientes_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);

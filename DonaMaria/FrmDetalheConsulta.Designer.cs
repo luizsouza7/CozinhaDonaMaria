@@ -117,6 +117,7 @@
             pictureBox1.Location = new Point(447, 75);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(350, 178);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 16;
             pictureBox1.TabStop = false;
             // 
@@ -142,6 +143,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            StartPosition = FormStartPosition.CenterParent;
             Controls.Add(pictureBox1);
             Controls.Add(label4);
             Controls.Add(dataGridView1);
