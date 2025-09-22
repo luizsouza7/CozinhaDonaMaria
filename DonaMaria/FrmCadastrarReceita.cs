@@ -149,9 +149,36 @@ namespace DonaMaria
             foreach (DataGridViewRow row in dataGridView2.Rows)
             {
                 if (row.IsNewRow) continue;
-                var nome = Convert.ToString(row.Cells[0].Value)?.Trim() ?? string.Empty; // Ingrediente
-                var qtd = Convert.ToString(row.Cells[1].Value)?.Trim() ?? string.Empty;  // Quantidade
-                var obs = Convert.ToString(row.Cells[2].Value)?.Trim() ?? string.Empty;  // Unidade/Observação
+                
+                // Usa nomes das colunas em vez de índices para evitar ArgumentOutOfRangeException
+                var nome = "";
+                var qtd = "";
+                var obs = "";
+                
+                // Tenta acessar as colunas pelos nomes, com fallback para índices
+                try
+                {
+                    if (dataGridView2.Columns.Contains("Ingrediente"))
+                        nome = Convert.ToString(row.Cells["Ingrediente"].Value)?.Trim() ?? string.Empty;
+                    else if (row.Cells.Count > 0)
+                        nome = Convert.ToString(row.Cells[0].Value)?.Trim() ?? string.Empty;
+                        
+                    if (dataGridView2.Columns.Contains("Quantidade"))
+                        qtd = Convert.ToString(row.Cells["Quantidade"].Value)?.Trim() ?? string.Empty;
+                    else if (row.Cells.Count > 1)
+                        qtd = Convert.ToString(row.Cells[1].Value)?.Trim() ?? string.Empty;
+                        
+                    if (dataGridView2.Columns.Contains("Observação"))
+                        obs = Convert.ToString(row.Cells["Observação"].Value)?.Trim() ?? string.Empty;
+                    else if (row.Cells.Count > 2)
+                        obs = Convert.ToString(row.Cells[2].Value)?.Trim() ?? string.Empty;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    // Se ainda assim der erro, pula esta linha
+                    continue;
+                }
+                
                 if (string.IsNullOrWhiteSpace(nome) && string.IsNullOrWhiteSpace(qtd) && string.IsNullOrWhiteSpace(obs))
                 {
                     continue;
