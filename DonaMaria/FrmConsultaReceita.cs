@@ -78,7 +78,14 @@ namespace DonaMaria
                 var nome = receita.Nome ?? string.Empty;
                 var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
                 
-                dataGridView1.Rows.Add(codigo, nome, descricao, "Abrir");
+                // Adiciona linha sem a coluna de foto (deixa vazia)
+                var row = new DataGridViewRow();
+                row.CreateCells(dataGridView1);
+                row.Cells[0].Value = null; // Coluna Foto - deixa vazia
+                row.Cells[1].Value = nome;  // Nome da Receita
+                row.Cells[2].Value = descricao; // Descrição
+                row.Cells[3].Value = "Abrir"; // Botão Abrir
+                dataGridView1.Rows.Add(row);
             }
         }
 
@@ -116,7 +123,14 @@ namespace DonaMaria
                 var nome = receita.Nome ?? string.Empty;
                 var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
                 
-                dataGridView1.Rows.Add(codigo, nome, descricao, "Abrir");
+                // Adiciona linha sem a coluna de foto (deixa vazia)
+                var row = new DataGridViewRow();
+                row.CreateCells(dataGridView1);
+                row.Cells[0].Value = null; // Coluna Foto - deixa vazia
+                row.Cells[1].Value = nome;  // Nome da Receita
+                row.Cells[2].Value = descricao; // Descrição
+                row.Cells[3].Value = "Abrir"; // Botão Abrir
+                dataGridView1.Rows.Add(row);
             }
 
             // Mensagem de status
