@@ -17,12 +17,21 @@ namespace DonaMaria
             InitializeComponent();
             btnLocalizar.Click += btnLocalizar_Click;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.DataError += dataGridView1_DataError;
             this.Load += FrmConsultaReceita_Load;
             if (dataGridView1.Columns["btnAbrir"] is DataGridViewButtonColumn abrirCol)
             {
                 abrirCol.Text = "Abrir";
                 abrirCol.UseColumnTextForButtonValue = true;
             }
+        }
+
+        private void dataGridView1_DataError(object? sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Trata erros de conversão no DataGridView
+            e.ThrowException = false;
+            var mensagem = e.Exception?.Message ?? "Erro desconhecido";
+            MessageBox.Show($"Erro ao exibir dados: {mensagem}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void FrmConsultaReceita_Load(object? sender, EventArgs e)
@@ -64,12 +73,12 @@ namespace DonaMaria
 
             foreach (var receita in todasReceitas)
             {
-                dataGridView1.Rows.Add(
-                    receita.Codigo,
-                    receita.Nome,
-                    $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções",
-                    "Abrir"
-                );
+                // Garante que os valores não sejam null
+                var codigo = receita.Codigo ?? string.Empty;
+                var nome = receita.Nome ?? string.Empty;
+                var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
+                
+                dataGridView1.Rows.Add(codigo, nome, descricao, "Abrir");
             }
         }
 
@@ -102,12 +111,12 @@ namespace DonaMaria
 
             foreach (var receita in receitasFiltradas)
             {
-                dataGridView1.Rows.Add(
-                    receita.Codigo,
-                    receita.Nome,
-                    $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções",
-                    "Abrir"
-                );
+                // Garante que os valores não sejam null
+                var codigo = receita.Codigo ?? string.Empty;
+                var nome = receita.Nome ?? string.Empty;
+                var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
+                
+                dataGridView1.Rows.Add(codigo, nome, descricao, "Abrir");
             }
 
             // Mensagem de status
