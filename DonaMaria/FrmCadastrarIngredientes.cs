@@ -54,11 +54,11 @@ namespace DonaMaria
             {
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if (!row.IsNewRow && 
+                    if (!row.IsNewRow &&
                         Convert.ToString(row.Cells["Código"].Value) == codigo &&
                         Convert.ToString(row.Cells["Nome"].Value) != nome)
                     {
-                        MessageBox.Show($"Já existe um ingrediente com o código '{codigo}'.", 
+                        MessageBox.Show($"Já existe um ingrediente com o código '{codigo}'.",
                             "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         textBox1.Focus();
                         return;
@@ -115,13 +115,13 @@ namespace DonaMaria
             else if (dataGridView1.Columns[e.ColumnIndex].Name == "btnExcluir")
             {
                 var nomeIngrediente = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Nome"].Value);
-                var resultado = MessageBox.Show($"Deseja realmente excluir o ingrediente '{nomeIngrediente}'?", 
+                var resultado = MessageBox.Show($"Deseja realmente excluir o ingrediente '{nomeIngrediente}'?",
                     "Confirmar Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+
                 if (resultado == DialogResult.Yes)
                 {
                     dataGridView1.Rows.RemoveAt(e.RowIndex);
-                    MessageBox.Show($"Ingrediente '{nomeIngrediente}' excluído com sucesso!", 
+                    MessageBox.Show($"Ingrediente '{nomeIngrediente}' excluído com sucesso!",
                         "Exclusão", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }

@@ -77,7 +77,7 @@ namespace DonaMaria
                 var codigo = receita.Codigo ?? string.Empty;
                 var nome = receita.Nome ?? string.Empty;
                 var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
-                
+
                 // Adiciona linha sem a coluna de foto (deixa vazia)
                 var row = new DataGridViewRow();
                 row.CreateCells(dataGridView1);
@@ -122,7 +122,7 @@ namespace DonaMaria
                 var codigo = receita.Codigo ?? string.Empty;
                 var nome = receita.Nome ?? string.Empty;
                 var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
-                
+
                 // Adiciona linha sem a coluna de foto (deixa vazia)
                 var row = new DataGridViewRow();
                 row.CreateCells(dataGridView1);

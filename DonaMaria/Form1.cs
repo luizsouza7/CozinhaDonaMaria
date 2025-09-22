@@ -34,7 +34,7 @@ namespace DonaMaria
 
             foreach (var tipo in tiposCozinha)
             {
-                dataGridView1.Rows.Add("", tipo, ""); // Código vazio, Nome do tipo, Descrição vazia
+                dataGridView1.Rows.Add(tipo.Codigo, tipo.Nome, tipo.Descricao);
             }
         }
 
@@ -93,7 +93,13 @@ namespace DonaMaria
             {
                 dataGridView1.Rows.Add(codigo, nome, descricao);
                 // Adiciona o tipo de cozinha ao sistema
-                KitchenTypeManager.AddKitchenType(nome);
+                var kitchenType = new KitchenType 
+                { 
+                    Codigo = codigo ?? string.Empty, 
+                    Nome = nome, 
+                    Descricao = descricao ?? string.Empty 
+                };
+                KitchenTypeManager.AddKitchenType(kitchenType);
             }
             else
             {
@@ -107,7 +113,13 @@ namespace DonaMaria
                 {
                     KitchenTypeManager.RemoveKitchenType(nomeAntigo);
                 }
-                KitchenTypeManager.AddKitchenType(nome);
+                var kitchenType = new KitchenType 
+                { 
+                    Codigo = codigo ?? string.Empty, 
+                    Nome = nome, 
+                    Descricao = descricao ?? string.Empty 
+                };
+                KitchenTypeManager.AddKitchenType(kitchenType);
             }
 
             textBox1.Clear();

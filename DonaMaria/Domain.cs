@@ -26,10 +26,17 @@ namespace DonaMaria
         public List<IngredientItem> Ingredientes { get; set; } = new List<IngredientItem>();
     }
 
+    public class KitchenType
+    {
+        public string Codigo { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+    }
+
     public static class KitchenTypeManager
     {
         private static readonly object _lock = new object();
-        private static readonly List<string> _kitchenTypes = new List<string>();
+        private static readonly List<KitchenType> _kitchenTypes = new List<KitchenType>();
         private static readonly string _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DonaMaria");
         private static readonly string _kitchenTypesFilePath = Path.Combine(_dataDirectory, "kitchen_types.json");
 
@@ -43,23 +50,23 @@ namespace DonaMaria
             }
         }
 
-        public static void SetKitchenTypes(List<string> kitchenTypes)
+        public static void SetKitchenTypes(List<KitchenType> kitchenTypes)
         {
             if (kitchenTypes == null) throw new ArgumentNullException(nameof(kitchenTypes));
             lock (_lock)
             {
                 _kitchenTypes.Clear();
-                _kitchenTypes.AddRange(kitchenTypes.Where(kt => !string.IsNullOrWhiteSpace(kt)));
+                _kitchenTypes.AddRange(kitchenTypes.Where(kt => !string.IsNullOrWhiteSpace(kt.Nome)));
                 TrySaveToDisk();
             }
         }
 
-        public static void AddKitchenType(string kitchenType)
+        public static void AddKitchenType(KitchenType kitchenType)
         {
-            if (string.IsNullOrWhiteSpace(kitchenType)) return;
+            if (kitchenType == null || string.IsNullOrWhiteSpace(kitchenType.Nome)) return;
             lock (_lock)
             {
-                if (!_kitchenTypes.Contains(kitchenType, StringComparer.OrdinalIgnoreCase))
+                if (!_kitchenTypes.Any(kt => string.Equals(kt.Nome, kitchenType.Nome, StringComparison.OrdinalIgnoreCase)))
                 {
                     _kitchenTypes.Add(kitchenType);
                     TrySaveToDisk();
@@ -67,21 +74,29 @@ namespace DonaMaria
             }
         }
 
-        public static void RemoveKitchenType(string kitchenType)
+        public static void RemoveKitchenType(string kitchenTypeName)
         {
-            if (string.IsNullOrWhiteSpace(kitchenType)) return;
+            if (string.IsNullOrWhiteSpace(kitchenTypeName)) return;
             lock (_lock)
             {
-                _kitchenTypes.RemoveAll(kt => string.Equals(kt, kitchenType, StringComparison.OrdinalIgnoreCase));
+                _kitchenTypes.RemoveAll(kt => string.Equals(kt.Nome, kitchenTypeName, StringComparison.OrdinalIgnoreCase));
                 TrySaveToDisk();
             }
         }
 
-        public static IReadOnlyList<string> GetKitchenTypes()
+        public static IReadOnlyList<KitchenType> GetKitchenTypes()
         {
             lock (_lock)
             {
                 return _kitchenTypes.ToList();
+            }
+        }
+
+        public static IReadOnlyList<string> GetKitchenTypeNames()
+        {
+            lock (_lock)
+            {
+                return _kitchenTypes.Select(kt => kt.Nome).ToList();
             }
         }
 
@@ -98,13 +113,21 @@ namespace DonaMaria
                 return;
             }
 
-            var validTypes = kitchenTypes.Where(kt => !string.IsNullOrWhiteSpace(kt)).ToList();
+            var validTypes = kitchenTypes.Where(kt => !string.IsNullOrWhiteSpace(kt))
+                .Select(kt => new KitchenType { Nome = kt, Codigo = "", Descricao = "" })
+                .ToList();
             SetKitchenTypes(validTypes);
         }
 
         private static void SetDefaultKitchenTypes()
         {
-            _kitchenTypes.AddRange(new[] { "Brasileira", "Italiana", "Japonesa", "Mexicana" });
+            _kitchenTypes.AddRange(new[] 
+            { 
+                new KitchenType { Codigo = "BR", Nome = "Brasileira", Descricao = "Culinária tradicional brasileira" },
+                new KitchenType { Codigo = "IT", Nome = "Italiana", Descricao = "Culinária tradicional italiana" },
+                new KitchenType { Codigo = "JP", Nome = "Japonesa", Descricao = "Culinária tradicional japonesa" },
+                new KitchenType { Codigo = "MX", Nome = "Mexicana", Descricao = "Culinária tradicional mexicana" }
+            });
             TrySaveToDisk();
         }
 
@@ -118,11 +141,11 @@ namespace DonaMaria
                     return;
                 }
                 var json = File.ReadAllText(_kitchenTypesFilePath);
-                var list = JsonSerializer.Deserialize<List<string>>(json);
+                var list = JsonSerializer.Deserialize<List<KitchenType>>(json);
                 if (list != null)
                 {
                     _kitchenTypes.Clear();
-                    _kitchenTypes.AddRange(list.Where(kt => !string.IsNullOrWhiteSpace(kt)));
+                    _kitchenTypes.AddRange(list.Where(kt => !string.IsNullOrWhiteSpace(kt.Nome)));
                 }
             }
             catch

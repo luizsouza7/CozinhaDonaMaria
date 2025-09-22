@@ -29,7 +29,7 @@ namespace DonaMaria
         {
             // Carrega tipos de cozinha configuráveis
             comboBox1.Items.Clear();
-            var kitchenTypes = KitchenTypeManager.GetKitchenTypes();
+            var kitchenTypes = KitchenTypeManager.GetKitchenTypeNames();
             comboBox1.Items.AddRange(kitchenTypes.ToArray());
             if (comboBox1.Items.Count > 0)
             {
