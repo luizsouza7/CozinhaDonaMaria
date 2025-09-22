@@ -100,13 +100,13 @@ namespace DonaMaria
             if (!string.IsNullOrWhiteSpace(codigo))
             {
                 var todasReceitas = RecipeRepository.GetAll();
-                var receitaExistente = todasReceitas.FirstOrDefault(r => 
-                    r.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase) && 
+                var receitaExistente = todasReceitas.FirstOrDefault(r =>
+                    r.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase) &&
                     !string.Equals(r.Nome, nome, StringComparison.OrdinalIgnoreCase));
-                
+
                 if (receitaExistente != null)
                 {
-                    MessageBox.Show($"Já existe uma receita com o código '{codigo}': '{receitaExistente.Nome}'.", 
+                    MessageBox.Show($"Já existe uma receita com o código '{codigo}': '{receitaExistente.Nome}'.",
                         "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     textBox1.Focus();
                     return;
@@ -143,7 +143,7 @@ namespace DonaMaria
             var ingredientes = ColetarIngredientes();
             if (ingredientes.Count == 0)
             {
-                var resultado = MessageBox.Show("Nenhum ingrediente foi informado. Deseja continuar mesmo assim?", 
+                var resultado = MessageBox.Show("Nenhum ingrediente foi informado. Deseja continuar mesmo assim?",
                     "Ingredientes", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (resultado == DialogResult.No)
                 {

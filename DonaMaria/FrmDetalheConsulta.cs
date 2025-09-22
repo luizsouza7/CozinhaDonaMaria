@@ -30,7 +30,8 @@ namespace DonaMaria
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            // Botão para fechar o formulário
+            this.Close();
         }
     }
 }

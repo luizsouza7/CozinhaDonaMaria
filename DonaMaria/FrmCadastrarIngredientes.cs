@@ -41,10 +41,29 @@ namespace DonaMaria
             var nome = textBox2.Text?.Trim();
             var descricao = textBox3.Text?.Trim();
 
+            // Validações obrigatórias
             if (string.IsNullOrWhiteSpace(nome))
             {
-                MessageBox.Show("Informe o nome do ingrediente.");
+                MessageBox.Show("Informe o nome do ingrediente.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBox2.Focus();
                 return;
+            }
+
+            // Validação de código único (se informado)
+            if (!string.IsNullOrWhiteSpace(codigo))
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (!row.IsNewRow && 
+                        Convert.ToString(row.Cells["Código"].Value) == codigo &&
+                        Convert.ToString(row.Cells["Nome"].Value) != nome)
+                    {
+                        MessageBox.Show($"Já existe um ingrediente com o código '{codigo}'.", 
+                            "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        textBox1.Focus();
+                        return;
+                    }
+                }
             }
 
             DataGridViewRow? rowToUpdate = null;
@@ -71,6 +90,9 @@ namespace DonaMaria
                 rowToUpdate.Cells["Descrição"].Value = descricao;
             }
 
+            // Mensagem de sucesso
+            MessageBox.Show($"Ingrediente '{nome}' salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             textBox1.Clear();
             textBox2.Clear();
             textBox3.Clear();
@@ -92,7 +114,16 @@ namespace DonaMaria
             }
             else if (dataGridView1.Columns[e.ColumnIndex].Name == "btnExcluir")
             {
-                dataGridView1.Rows.RemoveAt(e.RowIndex);
+                var nomeIngrediente = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Nome"].Value);
+                var resultado = MessageBox.Show($"Deseja realmente excluir o ingrediente '{nomeIngrediente}'?", 
+                    "Confirmar Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (resultado == DialogResult.Yes)
+                {
+                    dataGridView1.Rows.RemoveAt(e.RowIndex);
+                    MessageBox.Show($"Ingrediente '{nomeIngrediente}' excluído com sucesso!", 
+                        "Exclusão", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
     }

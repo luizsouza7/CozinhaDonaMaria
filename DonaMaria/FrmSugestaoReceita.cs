@@ -38,6 +38,16 @@ namespace DonaMaria
             txtModoPreparo.Text = receita.ModoPreparo;
             txtObservacoes.Text = receita.Observacoes ?? string.Empty;
             txtUtensilios.Text = receita.Utensilios ?? string.Empty;
+            
+            // Adiciona informações de tempo e porções se os campos existirem
+            if (Controls.Find("txtTempo", true).FirstOrDefault() is TextBox txtTempo)
+            {
+                txtTempo.Text = $"{receita.TempoPreparoMinutos} minutos";
+            }
+            if (Controls.Find("txtPorcoes", true).FirstOrDefault() is TextBox txtPorcoes)
+            {
+                txtPorcoes.Text = $"{receita.Porcoes} porções";
+            }
 
             gridIngredientes.Rows.Clear();
             foreach (var ing in receita.Ingredientes)
@@ -54,6 +64,16 @@ namespace DonaMaria
             txtObservacoes.Clear();
             txtUtensilios.Clear();
             gridIngredientes.Rows.Clear();
+            
+            // Limpa campos de tempo e porções se existirem
+            if (Controls.Find("txtTempo", true).FirstOrDefault() is TextBox txtTempo)
+            {
+                txtTempo.Clear();
+            }
+            if (Controls.Find("txtPorcoes", true).FirstOrDefault() is TextBox txtPorcoes)
+            {
+                txtPorcoes.Clear();
+            }
         }
     }
 }

@@ -111,7 +111,7 @@ namespace DonaMaria
             // 
             // btnTiposCozinha
             // 
-            btnTiposCozinha.Location = new Point(45, 57);
+            btnTiposCozinha.Location = new Point(51, 79);
             btnTiposCozinha.Name = "btnTiposCozinha";
             btnTiposCozinha.Size = new Size(180, 60);
             btnTiposCozinha.TabIndex = 0;
@@ -121,7 +121,7 @@ namespace DonaMaria
             // 
             // btnIngredientes
             // 
-            btnIngredientes.Location = new Point(264, 57);
+            btnIngredientes.Location = new Point(270, 79);
             btnIngredientes.Name = "btnIngredientes";
             btnIngredientes.Size = new Size(180, 60);
             btnIngredientes.TabIndex = 1;
@@ -131,7 +131,7 @@ namespace DonaMaria
             // 
             // btnReceitas
             // 
-            btnReceitas.Location = new Point(479, 57);
+            btnReceitas.Location = new Point(485, 79);
             btnReceitas.Name = "btnReceitas";
             btnReceitas.Size = new Size(180, 60);
             btnReceitas.TabIndex = 2;
@@ -141,7 +141,7 @@ namespace DonaMaria
             // 
             // btnConsultar
             // 
-            btnConsultar.Location = new Point(725, 57);
+            btnConsultar.Location = new Point(731, 79);
             btnConsultar.Name = "btnConsultar";
             btnConsultar.Size = new Size(180, 60);
             btnConsultar.TabIndex = 3;
@@ -153,7 +153,7 @@ namespace DonaMaria
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            label1.Location = new Point(379, 9);
+            label1.Location = new Point(375, 24);
             label1.Name = "label1";
             label1.Size = new Size(205, 25);
             label1.TabIndex = 4;
@@ -161,7 +161,7 @@ namespace DonaMaria
             // 
             // btnSugestaoReceita
             // 
-            btnSugestaoReceita.Location = new Point(369, 153);
+            btnSugestaoReceita.Location = new Point(375, 175);
             btnSugestaoReceita.Name = "btnSugestaoReceita";
             btnSugestaoReceita.Size = new Size(180, 60);
             btnSugestaoReceita.TabIndex = 6;
