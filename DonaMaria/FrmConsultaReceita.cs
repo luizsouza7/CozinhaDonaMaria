@@ -29,6 +29,24 @@ namespace DonaMaria
         {
             // Carrega todas as receitas ao abrir o formulário
             CarregarTodasReceitas();
+            
+            // Configura placeholder no campo de busca
+            textBox1.Text = "Digite o nome da receita, tipo de cozinha ou ingrediente...";
+            textBox1.ForeColor = Color.Gray;
+            textBox1.GotFocus += (s, args) => {
+                if (textBox1.Text == "Digite o nome da receita, tipo de cozinha ou ingrediente...")
+                {
+                    textBox1.Text = "";
+                    textBox1.ForeColor = Color.Black;
+                }
+            };
+            textBox1.LostFocus += (s, args) => {
+                if (string.IsNullOrWhiteSpace(textBox1.Text))
+                {
+                    textBox1.Text = "Digite o nome da receita, tipo de cozinha ou ingrediente...";
+                    textBox1.ForeColor = Color.Gray;
+                }
+            };
         }
 
         private void CarregarTodasReceitas()
@@ -57,6 +75,13 @@ namespace DonaMaria
         {
             // Busca receitas reais do repositório
             var termo = textBox1.Text?.Trim() ?? string.Empty;
+            
+            // Ignora placeholder text
+            if (termo == "Digite o nome da receita, tipo de cozinha ou ingrediente...")
+            {
+                termo = string.Empty;
+            }
+            
             dataGridView1.Rows.Clear();
             
             var todasReceitas = RecipeRepository.GetAll();
@@ -69,7 +94,7 @@ namespace DonaMaria
 
             if (receitasFiltradas.Count == 0)
             {
-                MessageBox.Show("Nenhuma receita encontrada com o termo informado.", "Consulta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Nenhuma receita encontrada com o termo '{termo}'.", "Consulta", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -82,6 +107,13 @@ namespace DonaMaria
                     "Abrir"
                 );
             }
+            
+            // Mensagem de status
+            var mensagem = string.IsNullOrEmpty(termo) 
+                ? $"Mostrando todas as {receitasFiltradas.Count} receitas cadastradas."
+                : $"Encontradas {receitasFiltradas.Count} receita(s) com o termo '{termo}'.";
+            
+            MessageBox.Show(mensagem, "Consulta", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void dataGridView1_CellContentClick(object? sender, DataGridViewCellEventArgs e)
