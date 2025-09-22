@@ -57,14 +57,61 @@ namespace DonaMaria
             var tempoHoras = (int)numericUpDown1.Value;
             var tempoMinutos = (int)numericUpDown2.Value;
             var porcoes = (int)numericUpDown3.Value;
+            var modoPreparo = textBox3.Text?.Trim() ?? string.Empty;
 
+            // Validações obrigatórias
             if (string.IsNullOrWhiteSpace(nome))
             {
-                MessageBox.Show("Informe o nome da receita.");
+                MessageBox.Show("Informe o nome da receita.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBox2.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(tipo))
+            {
+                MessageBox.Show("Selecione o tipo de cozinha.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBox1.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(modoPreparo))
+            {
+                MessageBox.Show("Informe o modo de preparo da receita.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBox3.Focus();
                 return;
             }
 
             var tempoTotal = (tempoHoras * 60) + tempoMinutos;
+            if (tempoTotal <= 0)
+            {
+                MessageBox.Show("O tempo de preparo deve ser maior que zero.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                numericUpDown1.Focus();
+                return;
+            }
+
+            if (porcoes <= 0)
+            {
+                MessageBox.Show("O número de porções deve ser maior que zero.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                numericUpDown3.Focus();
+                return;
+            }
+
+            // Validação de código único (se informado)
+            if (!string.IsNullOrWhiteSpace(codigo))
+            {
+                var todasReceitas = RecipeRepository.GetAll();
+                var receitaExistente = todasReceitas.FirstOrDefault(r => 
+                    r.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase) && 
+                    !string.Equals(r.Nome, nome, StringComparison.OrdinalIgnoreCase));
+                
+                if (receitaExistente != null)
+                {
+                    MessageBox.Show($"Já existe uma receita com o código '{codigo}': '{receitaExistente.Nome}'.", 
+                        "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox1.Focus();
+                    return;
+                }
+            }
 
             DataGridViewRow? rowToUpdate = null;
             if (!string.IsNullOrWhiteSpace(codigo))
@@ -92,6 +139,18 @@ namespace DonaMaria
                 rowToUpdate.Cells["Porções"].Value = porcoes;
             }
 
+            // Validação de ingredientes
+            var ingredientes = ColetarIngredientes();
+            if (ingredientes.Count == 0)
+            {
+                var resultado = MessageBox.Show("Nenhum ingrediente foi informado. Deseja continuar mesmo assim?", 
+                    "Ingredientes", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (resultado == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
             // Persistência em memória
             var receita = new Recipe
             {
@@ -100,12 +159,15 @@ namespace DonaMaria
                 TipoCozinha = tipo,
                 TempoPreparoMinutos = tempoTotal,
                 Porcoes = porcoes,
-                ModoPreparo = textBox3.Text?.Trim() ?? string.Empty,
+                ModoPreparo = modoPreparo,
                 Observacoes = null,
                 Utensilios = null,
-                Ingredientes = ColetarIngredientes()
+                Ingredientes = ingredientes
             };
             RecipeRepository.AddOrUpdate(receita);
+
+            // Mensagem de sucesso
+            MessageBox.Show($"Receita '{nome}' salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             // Limpa campos básicos (mantém ingredientes preenchidos)
             textBox1.Clear();
