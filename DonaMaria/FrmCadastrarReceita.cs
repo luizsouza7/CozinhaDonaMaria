@@ -111,9 +111,9 @@ namespace DonaMaria
             textBox1.Clear();
             textBox2.Clear();
             textBox3.Clear();
-            numericUpDown1.Value = 0;
-            numericUpDown2.Value = 0;
-            numericUpDown3.Value = 0;
+            numericUpDown1.Value = numericUpDown1.Minimum;
+            numericUpDown2.Value = numericUpDown2.Minimum;
+            numericUpDown3.Value = numericUpDown3.Minimum;
             if (comboBox1.Items.Count > 0) comboBox1.SelectedIndex = 0;
             textBox1.Focus();
         }
@@ -140,7 +140,8 @@ namespace DonaMaria
                     numericUpDown2.Value = tempoTotal % 60;
                 }
             }
-            numericUpDown3.Value = Convert.ToDecimal(row.Cells["Porções"].Value ?? 0);
+            var porcoes = Convert.ToDecimal(row.Cells["Porções"].Value ?? numericUpDown3.Minimum);
+            numericUpDown3.Value = Math.Max(porcoes, numericUpDown3.Minimum);
         }
 
         private List<IngredientItem> ColetarIngredientes()
@@ -149,12 +150,12 @@ namespace DonaMaria
             foreach (DataGridViewRow row in dataGridView2.Rows)
             {
                 if (row.IsNewRow) continue;
-                
+
                 // Usa nomes das colunas em vez de índices para evitar ArgumentOutOfRangeException
                 var nome = "";
                 var qtd = "";
                 var obs = "";
-                
+
                 // Tenta acessar as colunas pelos nomes, com fallback para índices
                 try
                 {
@@ -162,12 +163,12 @@ namespace DonaMaria
                         nome = Convert.ToString(row.Cells["Ingrediente"].Value)?.Trim() ?? string.Empty;
                     else if (row.Cells.Count > 0)
                         nome = Convert.ToString(row.Cells[0].Value)?.Trim() ?? string.Empty;
-                        
+
                     if (dataGridView2.Columns.Contains("Quantidade"))
                         qtd = Convert.ToString(row.Cells["Quantidade"].Value)?.Trim() ?? string.Empty;
                     else if (row.Cells.Count > 1)
                         qtd = Convert.ToString(row.Cells[1].Value)?.Trim() ?? string.Empty;
-                        
+
                     if (dataGridView2.Columns.Contains("Observação"))
                         obs = Convert.ToString(row.Cells["Observação"].Value)?.Trim() ?? string.Empty;
                     else if (row.Cells.Count > 2)
@@ -178,7 +179,7 @@ namespace DonaMaria
                     // Se ainda assim der erro, pula esta linha
                     continue;
                 }
-                
+
                 if (string.IsNullOrWhiteSpace(nome) && string.IsNullOrWhiteSpace(qtd) && string.IsNullOrWhiteSpace(obs))
                 {
                     continue;
