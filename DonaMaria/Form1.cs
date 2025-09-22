@@ -18,6 +18,24 @@ namespace DonaMaria
             }
 
             btnSalvar.Click += btnSalvar_Click;
+            this.Load += Form1_Load;
+        }
+
+        private void Form1_Load(object? sender, EventArgs e)
+        {
+            // Carrega os tipos de cozinha existentes
+            CarregarTiposCozinha();
+        }
+
+        private void CarregarTiposCozinha()
+        {
+            dataGridView1.Rows.Clear();
+            var tiposCozinha = KitchenTypeManager.GetKitchenTypes();
+
+            foreach (var tipo in tiposCozinha)
+            {
+                dataGridView1.Rows.Add("", tipo, ""); // Código vazio, Nome do tipo, Descrição vazia
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -36,6 +54,11 @@ namespace DonaMaria
             }
             else if (grid.Columns[e.ColumnIndex].Name == "btnExcluir")
             {
+                var nomeTipo = Convert.ToString(grid.Rows[e.RowIndex].Cells["Nome"].Value);
+                if (!string.IsNullOrEmpty(nomeTipo))
+                {
+                    KitchenTypeManager.RemoveKitchenType(nomeTipo);
+                }
                 grid.Rows.RemoveAt(e.RowIndex);
             }
         }
@@ -48,7 +71,7 @@ namespace DonaMaria
 
             if (string.IsNullOrWhiteSpace(nome))
             {
-                MessageBox.Show("Informe o nome.");
+                MessageBox.Show("Informe o nome do tipo de cozinha.");
                 return;
             }
 
@@ -69,12 +92,22 @@ namespace DonaMaria
             if (rowToUpdate == null)
             {
                 dataGridView1.Rows.Add(codigo, nome, descricao);
+                // Adiciona o tipo de cozinha ao sistema
+                KitchenTypeManager.AddKitchenType(nome);
             }
             else
             {
+                var nomeAntigo = Convert.ToString(rowToUpdate.Cells["Nome"].Value);
                 rowToUpdate.Cells["Código"].Value = codigo;
                 rowToUpdate.Cells["Nome"].Value = nome;
                 rowToUpdate.Cells["Descrição"].Value = descricao;
+
+                // Remove o tipo antigo e adiciona o novo
+                if (!string.IsNullOrEmpty(nomeAntigo))
+                {
+                    KitchenTypeManager.RemoveKitchenType(nomeAntigo);
+                }
+                KitchenTypeManager.AddKitchenType(nome);
             }
 
             textBox1.Clear();

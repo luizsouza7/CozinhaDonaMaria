@@ -27,9 +27,10 @@ namespace DonaMaria
 
         private void FrmCadastrarReceita_Load(object sender, EventArgs e)
         {
-            // Dados de exemplo para tipos de cozinha
+            // Carrega tipos de cozinha configuráveis
             comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(new object[] { "Brasileira", "Italiana", "Japonesa", "Mexicana" });
+            var kitchenTypes = KitchenTypeManager.GetKitchenTypes();
+            comboBox1.Items.AddRange(kitchenTypes.ToArray());
             if (comboBox1.Items.Count > 0)
             {
                 comboBox1.SelectedIndex = 0;

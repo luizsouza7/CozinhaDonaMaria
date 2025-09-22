@@ -26,6 +26,129 @@ namespace DonaMaria
         public List<IngredientItem> Ingredientes { get; set; } = new List<IngredientItem>();
     }
 
+    public static class KitchenTypeManager
+    {
+        private static readonly object _lock = new object();
+        private static readonly List<string> _kitchenTypes = new List<string>();
+        private static readonly string _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DonaMaria");
+        private static readonly string _kitchenTypesFilePath = Path.Combine(_dataDirectory, "kitchen_types.json");
+
+        static KitchenTypeManager()
+        {
+            TryLoadFromDisk();
+            // Se não há tipos salvos, inicializa com os padrão
+            if (_kitchenTypes.Count == 0)
+            {
+                SetDefaultKitchenTypes();
+            }
+        }
+
+        public static void SetKitchenTypes(List<string> kitchenTypes)
+        {
+            if (kitchenTypes == null) throw new ArgumentNullException(nameof(kitchenTypes));
+            lock (_lock)
+            {
+                _kitchenTypes.Clear();
+                _kitchenTypes.AddRange(kitchenTypes.Where(kt => !string.IsNullOrWhiteSpace(kt)));
+                TrySaveToDisk();
+            }
+        }
+
+        public static void AddKitchenType(string kitchenType)
+        {
+            if (string.IsNullOrWhiteSpace(kitchenType)) return;
+            lock (_lock)
+            {
+                if (!_kitchenTypes.Contains(kitchenType, StringComparer.OrdinalIgnoreCase))
+                {
+                    _kitchenTypes.Add(kitchenType);
+                    TrySaveToDisk();
+                }
+            }
+        }
+
+        public static void RemoveKitchenType(string kitchenType)
+        {
+            if (string.IsNullOrWhiteSpace(kitchenType)) return;
+            lock (_lock)
+            {
+                _kitchenTypes.RemoveAll(kt => string.Equals(kt, kitchenType, StringComparison.OrdinalIgnoreCase));
+                TrySaveToDisk();
+            }
+        }
+
+        public static IReadOnlyList<string> GetKitchenTypes()
+        {
+            lock (_lock)
+            {
+                return _kitchenTypes.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Método para definir rapidamente os tipos de cozinha desejados.
+        /// Use este método para configurar quais tipos de cozinha aparecerão no cadastro de receitas.
+        /// </summary>
+        /// <param name="kitchenTypes">Lista dos tipos de cozinha que devem aparecer no sistema</param>
+        public static void ConfigureKitchenTypes(params string[] kitchenTypes)
+        {
+            if (kitchenTypes == null || kitchenTypes.Length == 0)
+            {
+                SetDefaultKitchenTypes();
+                return;
+            }
+
+            var validTypes = kitchenTypes.Where(kt => !string.IsNullOrWhiteSpace(kt)).ToList();
+            SetKitchenTypes(validTypes);
+        }
+
+        private static void SetDefaultKitchenTypes()
+        {
+            _kitchenTypes.AddRange(new[] { "Brasileira", "Italiana", "Japonesa", "Mexicana" });
+            TrySaveToDisk();
+        }
+
+        private static void TryLoadFromDisk()
+        {
+            try
+            {
+                if (!File.Exists(_kitchenTypesFilePath))
+                {
+                    Directory.CreateDirectory(_dataDirectory);
+                    return;
+                }
+                var json = File.ReadAllText(_kitchenTypesFilePath);
+                var list = JsonSerializer.Deserialize<List<string>>(json);
+                if (list != null)
+                {
+                    _kitchenTypes.Clear();
+                    _kitchenTypes.AddRange(list.Where(kt => !string.IsNullOrWhiteSpace(kt)));
+                }
+            }
+            catch
+            {
+                // Em caso de erro, mantém lista vazia
+            }
+        }
+
+        private static void TrySaveToDisk()
+        {
+            try
+            {
+                Directory.CreateDirectory(_dataDirectory);
+                var json = JsonSerializer.Serialize(_kitchenTypes, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+                File.WriteAllText(_kitchenTypesFilePath, json);
+            }
+            catch
+            {
+                // Silencia falhas de escrita
+            }
+        }
+    }
+
     public static class RecipeRepository
     {
         private static readonly object _lock = new object();
