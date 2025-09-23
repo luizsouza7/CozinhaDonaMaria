@@ -33,6 +33,13 @@ namespace DonaMaria
         public string Descricao { get; set; } = string.Empty;
     }
 
+    public class Ingredient
+    {
+        public string Codigo { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+    }
+
     public static class KitchenTypeManager
     {
         private static readonly object _lock = new object();
@@ -229,6 +236,20 @@ namespace DonaMaria
             }
         }
 
+        public static bool Remove(string codigo)
+        {
+            if (string.IsNullOrWhiteSpace(codigo)) return false;
+            lock (_lock)
+            {
+                var removed = _recipes.RemoveAll(r => string.Equals(r.Codigo, codigo, StringComparison.OrdinalIgnoreCase)) > 0;
+                if (removed)
+                {
+                    TrySaveToDisk();
+                }
+                return removed;
+            }
+        }
+
         private static void TryLoadFromDisk()
         {
             try
@@ -261,6 +282,104 @@ namespace DonaMaria
             {
                 Directory.CreateDirectory(_dataDirectory);
                 var json = JsonSerializer.Serialize(_recipes, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+                File.WriteAllText(_dataFilePath, json);
+            }
+            catch
+            {
+                // Silencia falhas de escrita para não interromper o uso do app
+            }
+        }
+    }
+
+    public static class IngredientRepository
+    {
+        private static readonly object _lock = new object();
+        private static readonly List<Ingredient> _ingredients = new List<Ingredient>();
+        private static readonly string _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DonaMaria");
+        private static readonly string _dataFilePath = Path.Combine(_dataDirectory, "ingredients.json");
+
+        static IngredientRepository()
+        {
+            TryLoadFromDisk();
+        }
+
+        public static void AddOrUpdate(Ingredient ingredient)
+        {
+            if (ingredient == null) throw new ArgumentNullException(nameof(ingredient));
+            lock (_lock)
+            {
+                var existing = _ingredients.FirstOrDefault(i => string.Equals(i.Codigo, ingredient.Codigo, StringComparison.OrdinalIgnoreCase));
+                if (existing == null)
+                {
+                    _ingredients.Add(ingredient);
+                }
+                else
+                {
+                    // Atualiza campos
+                    existing.Nome = ingredient.Nome;
+                    existing.Descricao = ingredient.Descricao;
+                }
+                TrySaveToDisk();
+            }
+        }
+
+        public static IReadOnlyList<Ingredient> GetAll()
+        {
+            lock (_lock)
+            {
+                return _ingredients.ToList();
+            }
+        }
+
+        public static bool Remove(string codigo)
+        {
+            if (string.IsNullOrWhiteSpace(codigo)) return false;
+            lock (_lock)
+            {
+                var removed = _ingredients.RemoveAll(i => string.Equals(i.Codigo, codigo, StringComparison.OrdinalIgnoreCase)) > 0;
+                if (removed)
+                {
+                    TrySaveToDisk();
+                }
+                return removed;
+            }
+        }
+
+        private static void TryLoadFromDisk()
+        {
+            try
+            {
+                if (!File.Exists(_dataFilePath))
+                {
+                    Directory.CreateDirectory(_dataDirectory);
+                    return;
+                }
+                var json = File.ReadAllText(_dataFilePath);
+                var list = JsonSerializer.Deserialize<List<Ingredient>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                if (list != null)
+                {
+                    _ingredients.Clear();
+                    _ingredients.AddRange(list);
+                }
+            }
+            catch
+            {
+                // Em caso de erro de leitura/desserialização, inicia vazio
+            }
+        }
+
+        private static void TrySaveToDisk()
+        {
+            try
+            {
+                Directory.CreateDirectory(_dataDirectory);
+                var json = JsonSerializer.Serialize(_ingredients, new JsonSerializerOptions
                 {
                     WriteIndented = true
                 });

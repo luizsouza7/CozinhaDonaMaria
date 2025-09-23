@@ -54,6 +54,8 @@
             Cozinha = new DataGridViewTextBoxColumn();
             Tempo = new DataGridViewTextBoxColumn();
             Porções = new DataGridViewTextBoxColumn();
+            btnEditar = new DataGridViewButtonColumn();
+            btnExcluir = new DataGridViewButtonColumn();
             btnSalvar = new Button();
             btnAlterar = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -230,7 +232,7 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Código, Nome, Cozinha, Tempo, Porções });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Código, Nome, Cozinha, Tempo, Porções, btnEditar, btnExcluir });
             dataGridView1.Location = new Point(-2, 385);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(938, 67);
@@ -263,6 +265,22 @@
             // 
             Porções.HeaderText = "Porções";
             Porções.Name = "Porções";
+            // 
+            // btnEditar
+            // 
+            btnEditar.HeaderText = "Editar";
+            btnEditar.Name = "btnEditar";
+            btnEditar.Text = "Editar";
+            btnEditar.UseColumnTextForButtonValue = true;
+            btnEditar.Width = 80;
+            // 
+            // btnExcluir
+            // 
+            btnExcluir.HeaderText = "Excluir";
+            btnExcluir.Name = "btnExcluir";
+            btnExcluir.Text = "Excluir";
+            btnExcluir.UseColumnTextForButtonValue = true;
+            btnExcluir.Width = 80;
             // 
             // btnSalvar
             // 
@@ -348,6 +366,8 @@
         private DataGridViewTextBoxColumn Cozinha;
         private DataGridViewTextBoxColumn Tempo;
         private DataGridViewTextBoxColumn Porções;
+        private DataGridViewButtonColumn btnEditar;
+        private DataGridViewButtonColumn btnExcluir;
         private Button btnSalvar;
         private Button btnAlterar;
     }

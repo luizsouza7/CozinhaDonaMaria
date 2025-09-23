@@ -26,13 +26,14 @@ namespace DonaMaria
                 excluirCol.UseColumnTextForButtonValue = true;
             }
 
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             btnSalvar.Click += btnSalvar_Click;
         }
 
         private void FrmCadastrarIngredientes_Load(object sender, EventArgs e)
         {
-
+            // Carrega ingredientes existentes no DataGridView
+            CarregarIngredientes();
         }
 
         private void btnSalvar_Click(object? sender, EventArgs e)
@@ -52,46 +53,34 @@ namespace DonaMaria
             // Validação de código único (se informado)
             if (!string.IsNullOrWhiteSpace(codigo))
             {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
+                var ingredientesExistentes = IngredientRepository.GetAll();
+                var ingredienteExistente = ingredientesExistentes.FirstOrDefault(i =>
+                    i.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase) &&
+                    !string.Equals(i.Nome, nome, StringComparison.OrdinalIgnoreCase));
+
+                if (ingredienteExistente != null)
                 {
-                    if (!row.IsNewRow &&
-                        Convert.ToString(row.Cells["Código"].Value) == codigo &&
-                        Convert.ToString(row.Cells["Nome"].Value) != nome)
-                    {
-                        MessageBox.Show($"Já existe um ingrediente com o código '{codigo}'.",
-                            "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        textBox1.Focus();
-                        return;
-                    }
+                    MessageBox.Show($"Já existe um ingrediente com o código '{codigo}': '{ingredienteExistente.Nome}'.",
+                        "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox1.Focus();
+                    return;
                 }
             }
 
-            DataGridViewRow? rowToUpdate = null;
-            if (!string.IsNullOrWhiteSpace(codigo))
+            // Persistência no repositório
+            var ingrediente = new Ingredient
             {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (!row.IsNewRow && Convert.ToString(row.Cells["Código"].Value) == codigo)
-                    {
-                        rowToUpdate = row;
-                        break;
-                    }
-                }
-            }
-
-            if (rowToUpdate == null)
-            {
-                dataGridView1.Rows.Add(codigo, nome, descricao);
-            }
-            else
-            {
-                rowToUpdate.Cells["Código"].Value = codigo;
-                rowToUpdate.Cells["Nome"].Value = nome;
-                rowToUpdate.Cells["Descrição"].Value = descricao;
-            }
+                Codigo = codigo ?? string.Empty,
+                Nome = nome ?? string.Empty,
+                Descricao = descricao ?? string.Empty
+            };
+            IngredientRepository.AddOrUpdate(ingrediente);
 
             // Mensagem de sucesso
             MessageBox.Show($"Ingrediente '{nome}' salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Recarrega a lista de ingredientes
+            CarregarIngredientes();
 
             textBox1.Clear();
             textBox2.Clear();
@@ -99,31 +88,94 @@ namespace DonaMaria
             textBox1.Focus();
         }
 
-        private void dataGridView1_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+
+        private void CarregarIngredientes()
         {
-            if (e.RowIndex < 0)
+            try
             {
-                return;
-            }
-
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "btnAlterar")
-            {
-                textBox1.Text = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Código"].Value);
-                textBox2.Text = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Nome"].Value);
-                textBox3.Text = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Descrição"].Value);
-            }
-            else if (dataGridView1.Columns[e.ColumnIndex].Name == "btnExcluir")
-            {
-                var nomeIngrediente = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Nome"].Value);
-                var resultado = MessageBox.Show($"Deseja realmente excluir o ingrediente '{nomeIngrediente}'?",
-                    "Confirmar Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (resultado == DialogResult.Yes)
+                dataGridView1.Rows.Clear();
+                var ingredientes = IngredientRepository.GetAll();
+                
+                foreach (var ingrediente in ingredientes)
                 {
-                    dataGridView1.Rows.RemoveAt(e.RowIndex);
-                    MessageBox.Show($"Ingrediente '{nomeIngrediente}' excluído com sucesso!",
-                        "Exclusão", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dataGridView1.Rows.Add(
+                        ingrediente.Codigo,
+                        ingrediente.Nome,
+                        ingrediente.Descricao
+                    );
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar ingredientes: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DataGridView1_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dataGridView1.Rows[e.RowIndex];
+            var codigo = Convert.ToString(row.Cells["Código"].Value);
+            var nome = Convert.ToString(row.Cells["Nome"].Value);
+
+            if (e.ColumnIndex == dataGridView1.Columns["btnAlterar"].Index)
+            {
+                // Carrega os dados do ingrediente para edição
+                if (!string.IsNullOrEmpty(codigo))
+                    CarregarIngredienteParaEdicao(codigo);
+            }
+            else if (e.ColumnIndex == dataGridView1.Columns["btnExcluir"].Index)
+            {
+                // Confirma exclusão
+                var resultado = MessageBox.Show(
+                    $"Deseja realmente excluir o ingrediente '{nome}'?",
+                    "Confirmar Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes && !string.IsNullOrEmpty(codigo))
+                {
+                    ExcluirIngrediente(codigo);
+                }
+            }
+        }
+
+        private void CarregarIngredienteParaEdicao(string codigo)
+        {
+            var ingredientes = IngredientRepository.GetAll();
+            var ingrediente = ingredientes.FirstOrDefault(i => i.Codigo == codigo);
+            
+            if (ingrediente != null)
+            {
+                // Preenche os campos com os dados do ingrediente
+                textBox1.Text = ingrediente.Codigo;
+                textBox2.Text = ingrediente.Nome;
+                textBox3.Text = ingrediente.Descricao;
+            }
+        }
+
+        private void ExcluirIngrediente(string codigo)
+        {
+            try
+            {
+                // Remove do repositório
+                bool removido = IngredientRepository.Remove(codigo);
+                
+                if (removido)
+                {
+                    // Recarrega a lista
+                    CarregarIngredientes();
+                    MessageBox.Show("Ingrediente excluído com sucesso!", "Exclusão", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Ingrediente não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao excluir ingrediente: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

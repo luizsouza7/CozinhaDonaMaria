@@ -20,10 +20,6 @@ namespace DonaMaria
             btnAdicionarIngredientes.Click += btnAdicionarIngredientes_Click;
         }
 
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
         private void FrmCadastrarReceita_Load(object sender, EventArgs e)
         {
@@ -36,11 +32,11 @@ namespace DonaMaria
                 comboBox1.SelectedIndex = 0;
             }
 
-            // Cabeçalhos de botões padrão
-            if (dataGridView1.Columns["Código"] != null)
-            {
-                // apenas garantindo que existe
-            }
+            // Carrega receitas existentes no DataGridView
+            CarregarReceitas();
+            
+            // Configura eventos do DataGridView
+            dataGridView1.CellContentClick += DataGridView1_CellContentClick;
         }
 
         private void btnAdicionarIngredientes_Click(object? sender, EventArgs e)
@@ -169,6 +165,9 @@ namespace DonaMaria
             // Mensagem de sucesso
             MessageBox.Show($"Receita '{nome}' salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            // Recarrega a lista de receitas
+            CarregarReceitas();
+
             // Limpa campos básicos (mantém ingredientes preenchidos)
             textBox1.Clear();
             textBox2.Clear();
@@ -254,6 +253,115 @@ namespace DonaMaria
                 });
             }
             return lista;
+        }
+
+        private void CarregarReceitas()
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+                var receitas = RecipeRepository.GetAll();
+                
+                foreach (var receita in receitas)
+                {
+                    dataGridView1.Rows.Add(
+                        receita.Codigo,
+                        receita.Nome,
+                        receita.TipoCozinha,
+                        receita.TempoPreparoMinutos + " min",
+                        receita.Porcoes
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar receitas: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DataGridView1_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dataGridView1.Rows[e.RowIndex];
+            var codigo = Convert.ToString(row.Cells["Código"].Value);
+            var nome = Convert.ToString(row.Cells["Nome"].Value);
+
+            if (e.ColumnIndex == dataGridView1.Columns["btnEditar"].Index)
+            {
+                // Carrega os dados da receita para edição
+                if (!string.IsNullOrEmpty(codigo))
+                    CarregarReceitaParaEdicao(codigo);
+            }
+            else if (e.ColumnIndex == dataGridView1.Columns["btnExcluir"].Index)
+            {
+                // Confirma exclusão
+                var resultado = MessageBox.Show(
+                    $"Deseja realmente excluir a receita '{nome}'?",
+                    "Confirmar Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes && !string.IsNullOrEmpty(codigo))
+                {
+                    ExcluirReceita(codigo);
+                }
+            }
+        }
+
+        private void CarregarReceitaParaEdicao(string codigo)
+        {
+            var receitas = RecipeRepository.GetAll();
+            var receita = receitas.FirstOrDefault(r => r.Codigo == codigo);
+            
+            if (receita != null)
+            {
+                // Preenche os campos com os dados da receita
+                textBox1.Text = receita.Codigo;
+                textBox2.Text = receita.Nome;
+                comboBox1.SelectedItem = receita.TipoCozinha;
+                textBox3.Text = receita.ModoPreparo;
+                
+                // Converte tempo de minutos para horas e minutos
+                numericUpDown1.Value = receita.TempoPreparoMinutos / 60;
+                numericUpDown2.Value = receita.TempoPreparoMinutos % 60;
+                numericUpDown3.Value = receita.Porcoes;
+
+                // Carrega ingredientes
+                dataGridView2.Rows.Clear();
+                foreach (var ingrediente in receita.Ingredientes)
+                {
+                    dataGridView2.Rows.Add(
+                        ingrediente.Nome,
+                        ingrediente.Quantidade,
+                        ingrediente.Observacao
+                    );
+                }
+            }
+        }
+
+        private void ExcluirReceita(string codigo)
+        {
+            try
+            {
+                // Remove do repositório
+                bool removido = RecipeRepository.Remove(codigo);
+                
+                if (removido)
+                {
+                    // Recarrega a lista
+                    CarregarReceitas();
+                    MessageBox.Show("Receita excluída com sucesso!", "Exclusão", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Receita não encontrada!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao excluir receita: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

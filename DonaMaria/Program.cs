@@ -12,10 +12,39 @@ namespace DonaMaria
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            // Os tipos de cozinha são gerenciados pelo Form1 (Cadastro de Tipos de Cozinha)
-            // Não é necessário configurar tipos fixos aqui
+            // Carrega dados de exemplo se não existirem dados salvos
+            LoadSampleDataIfNeeded();
 
             Application.Run(new FrmMenu());
+        }
+
+        private static void LoadSampleDataIfNeeded()
+        {
+            try
+            {
+                // Verifica se já existem dados salvos
+                var existingRecipes = RecipeRepository.GetAll();
+                var existingKitchenTypes = KitchenTypeManager.GetKitchenTypes();
+                var existingIngredients = IngredientRepository.GetAll();
+
+                // Se não há dados, carrega os dados de exemplo
+                if (existingRecipes.Count == 0 || existingKitchenTypes.Count <= 4 || existingIngredients.Count == 0)
+                {
+                    SampleData.LoadSampleData();
+                }
+            }
+            catch
+            {
+                // Em caso de erro, tenta carregar os dados de exemplo mesmo assim
+                try
+                {
+                    SampleData.LoadSampleData();
+                }
+                catch
+                {
+                    // Se falhar, continua sem os dados de exemplo
+                }
+            }
         }
     }
 }
