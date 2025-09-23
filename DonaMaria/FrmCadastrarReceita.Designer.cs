@@ -58,11 +58,15 @@
             btnExcluir = new DataGridViewButtonColumn();
             btnSalvar = new Button();
             btnAlterar = new Button();
+            pictureBox1 = new PictureBox();
+            btnCarregarFoto = new Button();
+            label9 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // textBox2
@@ -300,12 +304,44 @@
             btnAlterar.Text = "Alterar";
             btnAlterar.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox1.Location = new Point(614, 80);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(150, 120);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 40;
+            pictureBox1.TabStop = false;
+            // 
+            // btnCarregarFoto
+            // 
+            btnCarregarFoto.Location = new Point(614, 206);
+            btnCarregarFoto.Name = "btnCarregarFoto";
+            btnCarregarFoto.Size = new Size(150, 30);
+            btnCarregarFoto.TabIndex = 41;
+            btnCarregarFoto.Text = "Carregar Foto";
+            btnCarregarFoto.UseVisualStyleBackColor = true;
+            btnCarregarFoto.Click += btnCarregarFoto_Click;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(614, 62);
+            label9.Name = "label9";
+            label9.Size = new Size(51, 15);
+            label9.TabIndex = 42;
+            label9.Text = "Foto:";
+            // 
             // FrmCadastrarReceita
             // 
             AcceptButton = btnSalvar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(938, 450);
+            ClientSize = new Size(1100, 450);
+            Controls.Add(label9);
+            Controls.Add(btnCarregarFoto);
+            Controls.Add(pictureBox1);
             Controls.Add(btnAlterar);
             Controls.Add(btnSalvar);
             Controls.Add(dataGridView1);
@@ -335,6 +371,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -370,5 +407,8 @@
         private DataGridViewButtonColumn btnExcluir;
         private Button btnSalvar;
         private Button btnAlterar;
+        private PictureBox pictureBox1;
+        private Button btnCarregarFoto;
+        private Label label9;
     }
 }

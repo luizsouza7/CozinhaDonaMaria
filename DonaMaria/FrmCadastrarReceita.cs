@@ -12,12 +12,14 @@ namespace DonaMaria
 {
     public partial class FrmCadastrarReceita : Form
     {
+        private string? caminhoFoto = null;
         public FrmCadastrarReceita()
         {
             InitializeComponent();
             btnSalvar.Click += btnSalvar_Click;
             btnAlterar.Click += btnAlterar_Click;
             btnAdicionarIngredientes.Click += btnAdicionarIngredientes_Click;
+            btnCarregarFoto.Click += btnCarregarFoto_Click;
         }
 
 
@@ -361,6 +363,32 @@ namespace DonaMaria
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao excluir receita: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCarregarFoto_Click(object? sender, EventArgs e)
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Arquivos de Imagem|*.jpg;*.jpeg;*.png;*.bmp;*.gif|Todos os arquivos|*.*";
+                openFileDialog.Title = "Selecionar Foto da Receita";
+                
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Carrega a imagem no PictureBox
+                        pictureBox1.Image?.Dispose(); // Libera a imagem anterior
+                        pictureBox1.Image = Image.FromFile(openFileDialog.FileName);
+                        caminhoFoto = openFileDialog.FileName;
+                        
+                        MessageBox.Show("Foto carregada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao carregar a foto: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }
