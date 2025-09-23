@@ -147,9 +147,9 @@
             // 
             // btnAdicionarIngredientes
             // 
-            btnAdicionarIngredientes.Location = new Point(653, 106);
+            btnAdicionarIngredientes.Location = new Point(614, 106);
             btnAdicionarIngredientes.Name = "btnAdicionarIngredientes";
-            btnAdicionarIngredientes.Size = new Size(99, 46);
+            btnAdicionarIngredientes.Size = new Size(150, 46);
             btnAdicionarIngredientes.TabIndex = 27;
             btnAdicionarIngredientes.Text = "Adicionar Ingredientes";
             btnAdicionarIngredientes.UseVisualStyleBackColor = true;
@@ -316,7 +316,7 @@
             // 
             // btnCarregarFoto
             // 
-            btnCarregarFoto.Location = new Point(614, 206);
+            btnCarregarFoto.Location = new Point(614, 240);
             btnCarregarFoto.Name = "btnCarregarFoto";
             btnCarregarFoto.Size = new Size(150, 30);
             btnCarregarFoto.TabIndex = 41;
