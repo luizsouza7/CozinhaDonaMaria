@@ -85,6 +85,7 @@ namespace DonaMaria
                 row.Cells[1].Value = nome;  // Nome da Receita
                 row.Cells[2].Value = descricao; // Descrição
                 row.Cells[3].Value = "Abrir"; // Botão Abrir
+                row.Cells[4].Value = codigo; // Código (coluna oculta)
                 dataGridView1.Rows.Add(row);
             }
         }
@@ -130,6 +131,7 @@ namespace DonaMaria
                 row.Cells[1].Value = nome;  // Nome da Receita
                 row.Cells[2].Value = descricao; // Descrição
                 row.Cells[3].Value = "Abrir"; // Botão Abrir
+                row.Cells[4].Value = codigo; // Código (coluna oculta)
                 dataGridView1.Rows.Add(row);
             }
 
@@ -149,8 +151,8 @@ namespace DonaMaria
             }
             if (dataGridView1.Columns[e.ColumnIndex].Name == "btnAbrir")
             {
-                var codigo = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Código"].Value) ?? string.Empty;
-                var nome = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["Nome"].Value) ?? string.Empty;
+                var codigo = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[4].Value) ?? string.Empty; // Coluna Código (índice 4)
+                var nome = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[1].Value) ?? string.Empty; // Coluna Nome (índice 1)
 
                 // Busca a receita completa pelo código
                 var todasReceitas = RecipeRepository.GetAll();

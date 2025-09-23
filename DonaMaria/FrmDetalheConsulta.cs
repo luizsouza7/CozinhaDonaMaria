@@ -19,8 +19,13 @@ namespace DonaMaria
 
         public void PreencherDetalhes(string nome, string receita, (string ingrediente, string quantidade, string observacao)[] ingredientes)
         {
+            // Preenche o nome da receita
             textBox2.Text = nome;
+            
+            // Preenche o modo de preparo
             textBox3.Text = receita;
+            
+            // Limpa e preenche a lista de ingredientes
             dataGridView1.Rows.Clear();
             foreach (var item in ingredientes)
             {

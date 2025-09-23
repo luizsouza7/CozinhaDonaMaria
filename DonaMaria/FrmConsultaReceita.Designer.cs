@@ -36,6 +36,7 @@
             Nome = new DataGridViewTextBoxColumn();
             Receita = new DataGridViewTextBoxColumn();
             btnAbrir = new DataGridViewButtonColumn();
+            Codigo = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -68,7 +69,7 @@
             // 
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Nome, Receita, btnAbrir });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Nome, Receita, btnAbrir, Codigo });
             dataGridView1.Location = new Point(12, 120);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(786, 275);
@@ -95,6 +96,12 @@
             // 
             btnAbrir.HeaderText = "Abrir";
             btnAbrir.Name = "btnAbrir";
+            // 
+            // Codigo
+            // 
+            Codigo.HeaderText = "Código";
+            Codigo.Name = "Codigo";
+            Codigo.Visible = false;
             // 
             // FrmConsultaReceita
             // 
@@ -124,5 +131,6 @@
         private DataGridViewTextBoxColumn Nome;
         private DataGridViewTextBoxColumn Receita;
         private DataGridViewButtonColumn btnAbrir;
+        private DataGridViewTextBoxColumn Codigo;
     }
 }
