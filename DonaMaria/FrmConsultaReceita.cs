@@ -78,10 +78,26 @@ namespace DonaMaria
                 var nome = receita.Nome ?? string.Empty;
                 var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
 
-                // Adiciona linha sem a coluna de foto (deixa vazia)
+                // Adiciona linha com a foto se existir
                 var row = new DataGridViewRow();
                 row.CreateCells(dataGridView1);
-                row.Cells[0].Value = null; // Coluna Foto - deixa vazia
+
+                // Carrega a imagem se existir
+                Image? imagem = null;
+                if (!string.IsNullOrEmpty(receita.CaminhoImagem) && File.Exists(receita.CaminhoImagem))
+                {
+                    try
+                    {
+                        imagem = Image.FromFile(receita.CaminhoImagem);
+                    }
+                    catch
+                    {
+                        // Se não conseguir carregar a imagem, deixa como null
+                        imagem = null;
+                    }
+                }
+
+                row.Cells[0].Value = imagem; // Coluna Foto
                 row.Cells[1].Value = nome;  // Nome da Receita
                 row.Cells[2].Value = descricao; // Descrição
                 row.Cells[3].Value = "Abrir"; // Botão Abrir
@@ -124,10 +140,26 @@ namespace DonaMaria
                 var nome = receita.Nome ?? string.Empty;
                 var descricao = $"{receita.TipoCozinha} - {receita.TempoPreparoMinutos}min - {receita.Porcoes} porções";
 
-                // Adiciona linha sem a coluna de foto (deixa vazia)
+                // Adiciona linha com a foto se existir
                 var row = new DataGridViewRow();
                 row.CreateCells(dataGridView1);
-                row.Cells[0].Value = null; // Coluna Foto - deixa vazia
+
+                // Carrega a imagem se existir
+                Image? imagem = null;
+                if (!string.IsNullOrEmpty(receita.CaminhoImagem) && File.Exists(receita.CaminhoImagem))
+                {
+                    try
+                    {
+                        imagem = Image.FromFile(receita.CaminhoImagem);
+                    }
+                    catch
+                    {
+                        // Se não conseguir carregar a imagem, deixa como null
+                        imagem = null;
+                    }
+                }
+
+                row.Cells[0].Value = imagem; // Coluna Foto
                 row.Cells[1].Value = nome;  // Nome da Receita
                 row.Cells[2].Value = descricao; // Descrição
                 row.Cells[3].Value = "Abrir"; // Botão Abrir
@@ -173,7 +205,8 @@ namespace DonaMaria
                     frm.PreencherDetalhes(
                         receita.Nome,
                         receita.ModoPreparo,
-                        ingredientes
+                        ingredientes,
+                        receita.CaminhoImagem
                     );
                     frm.ShowDialog(this);
                 }

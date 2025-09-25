@@ -23,6 +23,7 @@ namespace DonaMaria
         public string ModoPreparo { get; set; } = string.Empty;
         public string? Utensilios { get; set; }
         public string? Observacoes { get; set; }
+        public string? CaminhoImagem { get; set; }
         public List<IngredientItem> Ingredientes { get; set; } = new List<IngredientItem>();
     }
 
@@ -128,8 +129,8 @@ namespace DonaMaria
 
         private static void SetDefaultKitchenTypes()
         {
-            _kitchenTypes.AddRange(new[] 
-            { 
+            _kitchenTypes.AddRange(new[]
+            {
                 new KitchenType { Codigo = "BR", Nome = "Brasileira", Descricao = "Culinária tradicional brasileira" },
                 new KitchenType { Codigo = "IT", Nome = "Italiana", Descricao = "Culinária tradicional italiana" },
                 new KitchenType { Codigo = "JP", Nome = "Japonesa", Descricao = "Culinária tradicional japonesa" },
@@ -211,6 +212,7 @@ namespace DonaMaria
                     existing.ModoPreparo = recipe.ModoPreparo;
                     existing.Utensilios = recipe.Utensilios;
                     existing.Observacoes = recipe.Observacoes;
+                    existing.CaminhoImagem = recipe.CaminhoImagem;
                     existing.Ingredientes = recipe.Ingredientes;
                 }
                 TrySaveToDisk();

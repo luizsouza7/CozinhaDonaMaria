@@ -36,7 +36,7 @@ namespace DonaMaria
 
             // Carrega receitas existentes no DataGridView
             CarregarReceitas();
-            
+
             // Configura eventos do DataGridView
             dataGridView1.CellContentClick += DataGridView1_CellContentClick;
         }
@@ -160,6 +160,7 @@ namespace DonaMaria
                 ModoPreparo = modoPreparo,
                 Observacoes = null,
                 Utensilios = null,
+                CaminhoImagem = caminhoFoto,
                 Ingredientes = ingredientes
             };
             RecipeRepository.AddOrUpdate(receita);
@@ -263,7 +264,7 @@ namespace DonaMaria
             {
                 dataGridView1.Rows.Clear();
                 var receitas = RecipeRepository.GetAll();
-                
+
                 foreach (var receita in receitas)
                 {
                     dataGridView1.Rows.Add(
@@ -315,7 +316,7 @@ namespace DonaMaria
         {
             var receitas = RecipeRepository.GetAll();
             var receita = receitas.FirstOrDefault(r => r.Codigo == codigo);
-            
+
             if (receita != null)
             {
                 // Preenche os campos com os dados da receita
@@ -323,7 +324,7 @@ namespace DonaMaria
                 textBox2.Text = receita.Nome;
                 comboBox1.SelectedItem = receita.TipoCozinha;
                 textBox3.Text = receita.ModoPreparo;
-                
+
                 // Converte tempo de minutos para horas e minutos
                 numericUpDown1.Value = receita.TempoPreparoMinutos / 60;
                 numericUpDown2.Value = receita.TempoPreparoMinutos % 60;
@@ -339,6 +340,28 @@ namespace DonaMaria
                         ingrediente.Observacao
                     );
                 }
+
+                // Carrega a imagem se existir
+                if (!string.IsNullOrEmpty(receita.CaminhoImagem) && File.Exists(receita.CaminhoImagem))
+                {
+                    try
+                    {
+                        pictureBox1.Image?.Dispose();
+                        pictureBox1.Image = Image.FromFile(receita.CaminhoImagem);
+                        caminhoFoto = receita.CaminhoImagem;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao carregar a imagem: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        pictureBox1.Image = null;
+                        caminhoFoto = null;
+                    }
+                }
+                else
+                {
+                    pictureBox1.Image = null;
+                    caminhoFoto = null;
+                }
             }
         }
 
@@ -348,7 +371,7 @@ namespace DonaMaria
             {
                 // Remove do repositório
                 bool removido = RecipeRepository.Remove(codigo);
-                
+
                 if (removido)
                 {
                     // Recarrega a lista
@@ -372,7 +395,7 @@ namespace DonaMaria
             {
                 openFileDialog.Filter = "Arquivos de Imagem|*.jpg;*.jpeg;*.png;*.bmp;*.gif|Todos os arquivos|*.*";
                 openFileDialog.Title = "Selecionar Foto da Receita";
-                
+
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -381,7 +404,7 @@ namespace DonaMaria
                         pictureBox1.Image?.Dispose(); // Libera a imagem anterior
                         pictureBox1.Image = Image.FromFile(openFileDialog.FileName);
                         caminhoFoto = openFileDialog.FileName;
-                        
+
                         MessageBox.Show("Foto carregada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)

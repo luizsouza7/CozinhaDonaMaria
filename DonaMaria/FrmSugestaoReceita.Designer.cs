@@ -44,7 +44,10 @@ namespace DonaMaria
             label6 = new Label();
             txtObservacoes = new TextBox();
             btnGerar = new Button();
+            pictureBox1 = new PictureBox();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)gridIngredientes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -186,11 +189,32 @@ namespace DonaMaria
             btnGerar.Text = "Gerar outra";
             btnGerar.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox1.Location = new Point(800, 27);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(120, 120);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 13;
+            pictureBox1.TabStop = false;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(800, 9);
+            label7.Name = "label7";
+            label7.Size = new Size(51, 15);
+            label7.TabIndex = 14;
+            label7.Text = "Foto:";
+            // 
             // FrmSugestaoReceita
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(931, 450);
+            Controls.Add(label7);
+            Controls.Add(pictureBox1);
             Controls.Add(btnGerar);
             Controls.Add(txtObservacoes);
             Controls.Add(label6);
@@ -208,6 +232,7 @@ namespace DonaMaria
             StartPosition = FormStartPosition.CenterParent;
             Text = "Sugestão de Receita";
             ((System.ComponentModel.ISupportInitialize)gridIngredientes).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -230,6 +255,8 @@ namespace DonaMaria
         private Label label6;
         private TextBox txtObservacoes;
         private Button btnGerar;
+        private PictureBox pictureBox1;
+        private Label label7;
     }
 }
 

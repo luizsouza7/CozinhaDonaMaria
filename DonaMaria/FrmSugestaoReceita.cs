@@ -54,6 +54,25 @@ namespace DonaMaria
             {
                 gridIngredientes.Rows.Add(ing.Nome, ing.Quantidade, ing.Observacao);
             }
+
+            // Carrega a imagem se existir
+            if (!string.IsNullOrEmpty(receita.CaminhoImagem) && File.Exists(receita.CaminhoImagem))
+            {
+                try
+                {
+                    pictureBox1.Image?.Dispose();
+                    pictureBox1.Image = Image.FromFile(receita.CaminhoImagem);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao carregar a imagem: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    pictureBox1.Image = null;
+                }
+            }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
 
         private void LimparCampos()
@@ -74,6 +93,9 @@ namespace DonaMaria
             {
                 txtPorcoes.Clear();
             }
+
+            // Limpa a imagem
+            pictureBox1.Image = null;
         }
     }
 }
